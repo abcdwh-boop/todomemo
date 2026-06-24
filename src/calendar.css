@@ -1,0 +1,265 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg-color: #0c0d12;
+  --card-bg: rgba(22, 24, 30, 0.85);
+  --card-border: rgba(255, 255, 255, 0.07);
+  --primary-color: #5f5dec;
+  --primary-hover: #4e4bc9;
+  --text-main: #f3f4f6;
+  --text-muted: #8e939e;
+  --text-strike: #585c68;
+  --accent-color: #10b981;
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 라이트 테마 변수 오버라이딩 */
+body.light-theme {
+  --bg-color: #f1f5f9;
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(0, 0, 0, 0.08);
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-strike: #94a3b8;
+  --shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  background: radial-gradient(circle at 50% 0%, rgba(95, 93, 236, 0.06), transparent 80%);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 20px;
+  user-select: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: radial-gradient(circle at 50% 0%, rgba(95, 93, 236, 0.1), transparent 80%);
+}
+
+body.light-theme .calendar-container {
+  background: radial-gradient(circle at 50% 0%, rgba(95, 93, 236, 0.04), transparent 80%);
+}
+
+/* 상단 컨트롤 영역 */
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.month-nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-btn {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text-main);
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.nav-btn:hover {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #fff;
+}
+
+.current-month-display {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.today-btn {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text-main);
+  border-radius: 8px;
+  padding: 0 16px;
+  height: 36px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.today-btn:hover {
+  border-color: var(--primary-color);
+  background: rgba(95, 93, 236, 0.05);
+}
+
+/* 그리드 레이아웃 */
+.calendar-grid {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--card-bg);
+  box-shadow: var(--shadow);
+}
+
+/* 요일 헤더 */
+.weekdays-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--card-border);
+}
+
+body.light-theme .weekdays-header {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.weekday {
+  padding: 12px 0;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* 날짜 그리드 */
+.days-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: 1fr;
+}
+
+/* 날짜 셀 */
+.day-cell {
+  border-right: 1px solid var(--card-border);
+  border-bottom: 1px solid var(--card-border);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+  position: relative;
+  transition: var(--transition);
+}
+
+.day-cell:nth-child(7n) {
+  border-right: none;
+}
+
+.day-cell:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+body.light-theme .day-cell:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.day-cell.other-month {
+  opacity: 0.3;
+}
+
+.day-cell.selected {
+  background: rgba(95, 93, 236, 0.08);
+}
+
+/* 셀 내부 날짜 번호 */
+.day-number {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-bottom: 4px;
+}
+
+.day-cell.current-month .day-number {
+  color: var(--text-main);
+}
+
+.day-cell.today .day-number {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.day-cell.selected .day-number {
+  border: 1px solid var(--primary-color);
+}
+
+/* 셀 내의 투두 요약 목록 */
+.cell-todo-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.cell-todo-item {
+  font-size: 0.72rem;
+  padding: 2px 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 4px;
+  color: var(--text-main);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  line-height: 1.3;
+  border-left: 2px solid var(--primary-color);
+}
+
+body.light-theme .cell-todo-item {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.cell-todo-item.done {
+  text-decoration: line-through;
+  color: var(--text-strike);
+  opacity: 0.55;
+  border-left-color: var(--text-strike);
+  background: rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .cell-todo-item.done {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* 푸터 */
+.calendar-footer {
+  margin-top: 16px;
+  border-top: 1px solid var(--card-border);
+  padding-top: 12px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: center;
+}

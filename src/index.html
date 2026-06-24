@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>나의 투두리스트 메모장</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- 헤더: 날짜 선택기 및 할 일 입력창 -->
+    <header class="header">
+      <div class="date-selector">
+        <button class="date-btn" id="prev-date-btn" title="이전 날짜">&lt;</button>
+        <span class="current-date-display" id="date-display" title="오늘 날짜로 이동">2026-06-24</span>
+        <button class="date-btn" id="next-date-btn" title="다음 날짜">&gt;</button>
+      </div>
+      <div class="input-group">
+        <input type="text" class="todo-input" id="todo-input" placeholder="오늘 할 일을 입력하세요..." autocomplete="off">
+        <button class="add-btn" id="add-btn">추가</button>
+      </div>
+    </header>
+
+    <!-- 중단: 할 일 리스트 -->
+    <main class="list-container">
+      <ul class="todo-list" id="todo-list">
+        <!-- JS로 동적 렌더링 -->
+      </ul>
+      <div class="empty-state" id="empty-state" style="display: none;">
+        이 날짜에는 등록된 할 일이 없습니다.
+      </div>
+    </main>
+
+    <!-- 하단 액션 버튼 바 -->
+    <div class="bottom-actions">
+      <button class="bottom-btn" id="toggle-small-cal-btn">
+        📅 작은 달력
+      </button>
+      <button class="bottom-btn" id="open-large-cal-btn">
+        🖥️ 큰 달력
+      </button>
+      <button class="bottom-btn" id="open-menu-btn">
+        ⚙️ 메뉴
+      </button>
+    </div>
+
+    <!-- 작은 달력 슬라이드 패널 -->
+    <div class="small-calendar-panel" id="small-calendar-panel">
+      <div class="cal-header">
+        <button class="cal-nav-btn" id="cal-prev-month">&lt;</button>
+        <span class="cal-title" id="cal-month-title">2026년 6월</span>
+        <button class="cal-nav-btn" id="cal-next-month">&gt;</button>
+      </div>
+      <div class="cal-grid" id="cal-grid">
+        <!-- JS로 요일 및 날짜 채움 -->
+      </div>
+    </div>
+
+    <!-- 드래프트 가드 확인 모달 -->
+    <div class="modal-overlay" id="draft-modal">
+      <div class="modal-content">
+        <div class="modal-title">작성 중인 내용 저장</div>
+        <div class="modal-body">
+          입력창에 작성 중인 텍스트가 있습니다.<br>
+          이 내용을 현재 날짜에 저장하고 이동하시겠습니까?
+        </div>
+        <div class="modal-actions">
+          <button class="modal-btn primary" id="draft-save-btn">현재 날짜에 저장 후 이동</button>
+          <button class="modal-btn danger" id="draft-discard-btn">작성 내용 버리고 이동</button>
+          <button class="modal-btn secondary" id="draft-cancel-btn">날짜 이동 취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 비즈니스 모듈 로드 -->
+  <script src="modules/taskRepository.js"></script>
+  <script src="modules/calendarService.js"></script>
+  <!-- 렌더러 스크립트 로드 -->
+  <script src="renderer.js"></script>
+</body>
+</html>

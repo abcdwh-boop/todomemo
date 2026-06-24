@@ -1,0 +1,7 @@
+node_modules/
+*.log
+tasks.json
+tasks.json.tmp
+tasks.json.bak
+.DS_Store
+Thumbs.db

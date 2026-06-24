@@ -1,0 +1,15 @@
+{
+  "name": "todomemo",
+  "version": "1.0.0",
+  "description": "교사용 투두리스트 메모장 (TodoMemoApp)",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "Teacher",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^31.0.0"
+  }
+}
