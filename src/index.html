@@ -11,9 +11,14 @@
     <!-- 헤더: 날짜 선택기 및 할 일 입력창 -->
     <header class="header">
       <div class="date-selector">
-        <button class="date-btn" id="prev-date-btn" title="이전 날짜">&lt;</button>
+        <div class="date-left-group">
+          <button class="date-btn" id="prev-date-btn" title="이전 날짜">&lt;</button>
+        </div>
         <span class="current-date-display" id="date-display" title="오늘 날짜로 이동">2026-06-24</span>
-        <button class="date-btn" id="next-date-btn" title="다음 날짜">&gt;</button>
+        <div class="date-right-group">
+          <button class="date-btn" id="next-date-btn" title="다음 날짜">&gt;</button>
+          <button class="today-btn" id="today-date-btn" title="오늘날짜로 이동">오늘날짜로 가기</button>
+        </div>
       </div>
       <div class="input-group">
         <input type="text" class="todo-input" id="todo-input" placeholder="오늘 할 일을 입력하세요..." autocomplete="off">

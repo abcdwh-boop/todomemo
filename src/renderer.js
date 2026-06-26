@@ -2,6 +2,7 @@
 const dateDisplay = document.getElementById('date-display');
 const prevDateBtn = document.getElementById('prev-date-btn');
 const nextDateBtn = document.getElementById('next-date-btn');
+const todayDateBtn = document.getElementById('today-date-btn');
 const todoInput = document.getElementById('todo-input');
 const addBtn = document.getElementById('add-btn');
 const todoList = document.getElementById('todo-list');
@@ -29,6 +30,20 @@ let smallCalYear = 0;
 let smallCalMonth = 0; // 0 ~ 11
 let pendingTargetDate = ''; // 날짜 전환 보호 대기 날짜
 let isSmallCalOpen = false;
+let activeDropdown = null;
+
+function closeActiveDropdown() {
+  if (activeDropdown) {
+    activeDropdown.classList.remove('open');
+    activeDropdown = null;
+  }
+}
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.todo-menu-container')) {
+    closeActiveDropdown();
+  }
+});
 
 // 1. 초기 기동
 window.addEventListener('DOMContentLoaded', async () => {
@@ -94,6 +109,10 @@ function renderTasks() {
     li.className = `todo-item ${task.done ? 'done' : ''}`;
     li.dataset.id = task.id;
 
+    // 메인 정보 행 (체크박스, 내용, 액션 버튼)
+    const mainRow = document.createElement('div');
+    mainRow.className = 'todo-main-row';
+
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.className = 'todo-checkbox';
@@ -115,31 +134,146 @@ function renderTasks() {
 
     contentWrapper.appendChild(textSpan);
 
+    // 상세 메모 유무 아이콘 표시기
+    const memoIndicator = document.createElement('span');
+    memoIndicator.className = 'todo-memo-indicator';
+    memoIndicator.textContent = '📝';
+    memoIndicator.title = '상세 메모 있음';
+    memoIndicator.style.display = task.memo ? 'inline-flex' : 'none';
+    contentWrapper.appendChild(memoIndicator);
+
     const actionsDiv = document.createElement('div');
     actionsDiv.className = 'todo-actions';
 
-    const editBtn = document.createElement('button');
-    editBtn.className = 'action-btn edit';
-    editBtn.innerHTML = '✏️';
-    editBtn.title = '편집';
-    editBtn.addEventListener('click', () => {
+    // 드롭다운 메뉴 컨테이너 및 트리거 버튼
+    const menuContainer = document.createElement('div');
+    menuContainer.className = 'todo-menu-container';
+
+    const triggerBtn = document.createElement('button');
+    triggerBtn.className = 'action-btn menu-trigger-btn';
+    triggerBtn.innerHTML = '⋮';
+    triggerBtn.title = '더보기';
+
+    // 말풍선 드롭다운 메뉴 팝업
+    const menuPopup = document.createElement('div');
+    menuPopup.className = 'todo-menu-popup';
+
+    // 1. 상세 메모 토글 버튼
+    const menuMemoBtn = document.createElement('button');
+    menuMemoBtn.className = 'todo-menu-item';
+    menuMemoBtn.innerHTML = '<span class="menu-icon">📝</span> 상세 메모';
+
+    // 2. 편집 버튼
+    const menuEditBtn = document.createElement('button');
+    menuEditBtn.className = 'todo-menu-item';
+    menuEditBtn.innerHTML = '<span class="menu-icon">✏️</span> 편집';
+
+    // 3. 내일로 이동 버튼
+    const menuMoveBtn = document.createElement('button');
+    menuMoveBtn.className = 'todo-menu-item';
+    menuMoveBtn.innerHTML = '<span class="menu-icon">➡️</span> 내일로 이동';
+
+    // 4. 삭제 버튼
+    const menuDeleteBtn = document.createElement('button');
+    menuDeleteBtn.className = 'todo-menu-item delete';
+    menuDeleteBtn.innerHTML = '<span class="menu-icon">🗑️</span> 삭제';
+
+    menuPopup.appendChild(menuMemoBtn);
+    menuPopup.appendChild(menuEditBtn);
+    menuPopup.appendChild(menuMoveBtn);
+    menuPopup.appendChild(menuDeleteBtn);
+
+    menuContainer.appendChild(triggerBtn);
+    menuContainer.appendChild(menuPopup);
+    actionsDiv.appendChild(menuContainer);
+
+    mainRow.appendChild(checkbox);
+    mainRow.appendChild(contentWrapper);
+    mainRow.appendChild(actionsDiv);
+
+    // 상세 메모 접이식 패널
+    const memoPanel = document.createElement('div');
+    memoPanel.className = 'todo-memo-panel';
+    memoPanel.style.display = task.memoHidden ? 'none' : 'block';
+
+    const memoTextarea = document.createElement('textarea');
+    memoTextarea.className = 'todo-memo-textarea';
+    memoTextarea.placeholder = '부연설명(상세 메모)을 입력하세요...';
+    memoTextarea.value = task.memo || '';
+
+    // 메모 입력 시 백그라운드 자동 저장 (디바운싱 및 블러 처리)
+    let saveTimeout = null;
+    const saveMemo = () => {
+      const val = memoTextarea.value;
+      if (task.memo !== val) {
+        window.TaskRepository.updateTask(task.id, { memo: val });
+        if (val.trim()) {
+          memoIndicator.style.display = 'inline-flex';
+        } else {
+          memoIndicator.style.display = 'none';
+        }
+      }
+    };
+
+    memoTextarea.addEventListener('input', () => {
+      clearTimeout(saveTimeout);
+      saveTimeout = setTimeout(saveMemo, 1000); // 1초 대기 후 자동 저장
+    });
+    memoTextarea.addEventListener('blur', saveMemo);
+
+    memoPanel.appendChild(memoTextarea);
+
+    // 삼점 버튼 클릭 이벤트 바인딩
+    triggerBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = menuPopup.classList.contains('open');
+      closeActiveDropdown();
+      if (!isOpen) {
+        menuPopup.classList.add('open');
+        activeDropdown = menuPopup;
+      }
+    });
+
+    // 상세 메모 메뉴 동작
+    menuMemoBtn.addEventListener('click', () => {
+      closeActiveDropdown();
+      const isHidden = memoPanel.style.display === 'none';
+      if (isHidden) {
+        memoPanel.style.display = 'block';
+        window.TaskRepository.updateTask(task.id, { memoHidden: false });
+        memoTextarea.focus();
+      } else {
+        memoPanel.style.display = 'none';
+        window.TaskRepository.updateTask(task.id, { memoHidden: true });
+        saveMemo(); // 닫을 때 즉시 저장
+      }
+    });
+
+    // 편집 메뉴 동작
+    menuEditBtn.addEventListener('click', () => {
+      closeActiveDropdown();
       enableInlineEdit(li, task);
     });
 
-    const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'action-btn delete';
-    deleteBtn.innerHTML = '🗑️';
-    deleteBtn.title = '삭제';
-    deleteBtn.addEventListener('click', () => {
+    // 내일로 이동 동작
+    menuMoveBtn.addEventListener('click', () => {
+      closeActiveDropdown();
+      const currentDate = window.CalendarService.parseDate(selectedDate);
+      currentDate.setDate(currentDate.getDate() + 1);
+      const tomorrowStr = window.CalendarService.formatDate(currentDate);
+
+      window.TaskRepository.moveTaskToDate(task.id, tomorrowStr);
+      renderTasks();
+    });
+
+    // 삭제 메뉴 동작
+    menuDeleteBtn.addEventListener('click', () => {
+      closeActiveDropdown();
       window.TaskRepository.deleteTask(task.id);
     });
 
-    actionsDiv.appendChild(editBtn);
-    actionsDiv.appendChild(deleteBtn);
-
-    li.appendChild(checkbox);
-    li.appendChild(contentWrapper);
-    li.appendChild(actionsDiv);
+    li.appendChild(mainRow);
+    li.appendChild(memoPanel);
     todoList.appendChild(li);
   });
 }
@@ -186,11 +320,7 @@ function enableInlineEdit(li, task) {
   };
 
   const restoreItem = () => {
-    li.classList.remove('editing');
-    contentWrapper.innerHTML = '';
-    contentWrapper.appendChild(oldTextSpan);
-    todoActions.style.display = 'flex';
-    editActionsDiv.remove();
+    renderTasks();
   };
 
   saveBtn.addEventListener('click', saveChange);
@@ -286,7 +416,7 @@ nextDateBtn.addEventListener('click', () => {
   requestDateChange(window.CalendarService.formatDate(currentDate));
 });
 
-dateDisplay.addEventListener('click', () => {
+function goToToday() {
   const todayStr = window.CalendarService.formatDate(new Date());
   requestDateChange(todayStr);
   
@@ -296,7 +426,12 @@ dateDisplay.addEventListener('click', () => {
   if (isSmallCalOpen) {
     initSmallCalendarGrid();
   }
-});
+}
+
+dateDisplay.addEventListener('click', goToToday);
+if (todayDateBtn) {
+  todayDateBtn.addEventListener('click', goToToday);
+}
 
 // 8. 작은 달력 모듈 구현
 toggleSmallCalBtn.addEventListener('click', () => {
@@ -348,6 +483,10 @@ function renderSmallCalendarDays() {
 
     if (d.dateString === selectedDate) {
       cell.classList.add('selected');
+    }
+
+    if (d.dateString < todayStr) {
+      cell.classList.add('passed');
     }
 
     cell.addEventListener('click', () => {

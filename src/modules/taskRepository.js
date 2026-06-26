@@ -159,7 +159,8 @@ class TaskRepository {
       id: this.generateId(),
       text: text.trim(),
       done: false,
-      memoHidden: false,
+      memoHidden: true,
+      memo: '',
       createdAt: Date.now()
     };
 
@@ -204,6 +205,31 @@ class TaskRepository {
       this.saveTasks();
     }
     return found;
+  }
+
+  moveTaskToDate(taskId, targetDate) {
+    let taskToMove = null;
+    let found = false;
+    for (const date in this.data.tasksByDate) {
+      const index = this.data.tasksByDate[date].findIndex(t => t.id === taskId);
+      if (index !== -1) {
+        taskToMove = this.data.tasksByDate[date].splice(index, 1)[0];
+        if (this.data.tasksByDate[date].length === 0) {
+          delete this.data.tasksByDate[date];
+        }
+        found = true;
+        break;
+      }
+    }
+    if (found && taskToMove) {
+      if (!this.data.tasksByDate[targetDate]) {
+        this.data.tasksByDate[targetDate] = [];
+      }
+      this.data.tasksByDate[targetDate].push(taskToMove);
+      this.saveTasks();
+      return true;
+    }
+    return false;
   }
 
   toggleDone(taskId) {

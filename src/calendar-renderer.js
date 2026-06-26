@@ -93,7 +93,7 @@ function renderCalendar() {
         
         const truncatedText = window.CalendarService.truncateText(task.text, 10);
         itemLi.textContent = `· ${truncatedText}`;
-        itemLi.title = task.text;
+        itemLi.title = task.text + (task.memo ? `\n(메모: ${task.memo})` : '');
 
         todoListUl.appendChild(itemLi);
       });
