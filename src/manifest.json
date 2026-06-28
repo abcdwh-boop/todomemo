@@ -1,0 +1,18 @@
+{
+  "name": "TodoMemo - 교사용 투두리스트 메모장",
+  "short_name": "TodoMemo",
+  "description": "교사를 위한 스타벅스 감성의 모바일 투두리스트 메모장",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f2f0eb",
+  "theme_color": "#1E3932",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23006241'/><path d='M30 50 L45 65 L70 35' stroke='%23ffffff' stroke-width='8' fill='none' stroke-linecap='round'/></svg>",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

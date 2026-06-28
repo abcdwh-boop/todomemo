@@ -1,65 +1,68 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@font-face {
+    font-family: 'GangwonEducationModuche';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFLightA.woff') format('woff');
+    font-weight: 300;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GangwonEducationModuche';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff') format('woff');
+    font-weight: 700;
+    font-display: swap;
+}
 
 :root {
-  --bg-color: #0c0d12;
-  --card-bg: rgba(22, 24, 30, 0.85);
-  --card-border: rgba(255, 255, 255, 0.07);
-  --primary-color: #5f5dec;
-  --primary-hover: #4e4bc9;
-  --text-main: #f3f4f6;
-  --text-muted: #8e939e;
-  --accent-color: #10b981;
-  --warning-color: #f59e0b;
-  --danger-color: #ef4444;
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --bg-color: #f2f0eb;
+  --card-bg: #ffffff;
+  --card-border: rgba(0, 0, 0, 0.08);
+  --primary-color: #00754A;
+  --primary-hover: #006241;
+  --brand-green: #006241;
+  --house-green: #1E3932;
+  --green-light: #d4e9e2;
+  --text-main: rgba(0, 0, 0, 0.87);
+  --text-muted: rgba(0, 0, 0, 0.58);
+  --accent-color: #00754A;
+  --warning-color: #cba258;
+  --danger-color: #c82014;
+  --font-family: 'GangwonEducationModuche', sans-serif;
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
   --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 라이트 테마 변수 오버라이딩 */
+body.dark-theme, body:not(.light-theme) {
+  --bg-color: #1E3932;
+  --card-bg: #142823;
+  --card-border: rgba(255, 255, 255, 0.1);
+  --text-main: rgba(255, 255, 255, 0.95);
+  --text-muted: rgba(255, 255, 255, 0.70);
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
 body.light-theme {
-  --bg-color: #f1f5f9;
-  --card-bg: rgba(255, 255, 255, 0.95);
+  --bg-color: #f2f0eb;
+  --card-bg: #ffffff;
   --card-border: rgba(0, 0, 0, 0.08);
-  --text-main: #0f172a;
-  --text-muted: #64748b;
-  --shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-  background: radial-gradient(circle at 50% 0%, rgba(95, 93, 236, 0.04), transparent 80%);
-}
-
-/* 라이트 테마 전용 가독성 세부 룰 */
-body.light-theme .form-input {
-  background: rgba(255, 255, 255, 0.9) !important;
-  color: #0f172a !important;
-  border-color: #cbd5e1 !important;
-}
-
-body.light-theme .section-title,
-body.light-theme .document-body h2 {
-  color: #0f172a !important;
-}
-
-body.light-theme .document-body p,
-body.light-theme .document-body li {
-  color: #334155 !important;
-}
-
-body.light-theme .tab-btn {
-  color: var(--text-muted);
-}
-
-body.light-theme .tab-btn.active {
-  color: var(--primary-color);
-}
-
-body.light-theme .tab-btn:hover {
-  color: var(--text-main);
+  --text-main: rgba(0, 0, 0, 0.87);
+  --text-muted: rgba(0, 0, 0, 0.58);
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+button, input, textarea, select {
+  font-family: var(--font-family) !important;
+}
+
+.material-symbols-outlined {
+  font-size: 18px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 body {
@@ -72,6 +75,7 @@ body {
   overflow: hidden;
   padding: 20px;
   user-select: none;
+  letter-spacing: -0.01em;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -79,11 +83,6 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: radial-gradient(circle at 50% 0%, rgba(95, 93, 236, 0.08), transparent 80%);
-}
-
-body.light-theme .viewer-container {
-  background: radial-gradient(circle at 50% 0%, rgba(95, 93, 236, 0.04), transparent 80%);
 }
 
 .viewer-header {
@@ -91,39 +90,47 @@ body.light-theme .viewer-container {
 }
 
 .viewer-title {
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   font-weight: 700;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.02em;
+  color: var(--brand-green);
   margin-bottom: 16px;
+}
+
+body.dark-theme .viewer-title, body:not(.light-theme) .viewer-title {
+  color: var(--green-light);
 }
 
 /* 탭 메뉴 */
 .tabs {
   display: flex;
   border-bottom: 1px solid var(--card-border);
-  gap: 8px;
+  gap: 10px;
+  padding-bottom: 8px;
 }
 
 .tab-btn {
   background: transparent;
-  border: none;
+  border: 1px solid transparent;
   color: var(--text-muted);
-  padding: 10px 16px;
-  font-size: 0.9rem;
-  font-weight: 500;
+  padding: 8px 18px;
+  font-size: 0.88rem;
+  font-weight: 600;
   cursor: pointer;
-  border-bottom: 2px solid transparent;
+  border-radius: 50px; /* Starbucks Pill Tab */
   transition: var(--transition);
 }
 
 .tab-btn:hover {
-  color: var(--text-main);
+  color: var(--primary-color);
+  background: rgba(0, 117, 74, 0.08);
 }
 
 .tab-btn.active {
-  color: var(--primary-color);
-  border-bottom-color: var(--primary-color);
-  font-weight: 600;
+  color: #ffffff;
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow);
 }
 
 /* 탭 콘텐츠 영역 */
@@ -143,12 +150,8 @@ body.light-theme .viewer-container {
 }
 
 .tab-content::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 117, 74, 0.2);
   border-radius: 3px;
-}
-
-body.light-theme .tab-content::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.1);
 }
 
 .tab-pane {
@@ -162,18 +165,22 @@ body.light-theme .tab-content::-webkit-scrollbar-thumb {
 /* 문서 스타일 */
 .document-body {
   line-height: 1.7;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   color: var(--text-main);
 }
 
 .document-body h2 {
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1.15rem;
+  font-weight: 700;
   margin-top: 24px;
-  margin-bottom: 8px;
-  color: #fff;
-  border-left: 3px solid var(--primary-color);
-  padding-left: 8px;
+  margin-bottom: 10px;
+  color: var(--brand-green);
+  border-left: 4px solid var(--primary-color);
+  padding-left: 10px;
+}
+
+body.dark-theme .document-body h2, body:not(.light-theme) .document-body h2 {
+  color: var(--green-light);
 }
 
 .document-body h2:first-of-type {
@@ -181,18 +188,18 @@ body.light-theme .tab-content::-webkit-scrollbar-thumb {
 }
 
 .document-body p {
-  margin-bottom: 12px;
-  color: #d1d5db;
+  margin-bottom: 14px;
+  color: var(--text-main);
 }
 
 .document-body ul {
-  margin-bottom: 16px;
-  padding-left: 20px;
+  margin-bottom: 18px;
+  padding-left: 24px;
 }
 
 .document-body li {
-  margin-bottom: 6px;
-  color: #d1d5db;
+  margin-bottom: 8px;
+  color: var(--text-main);
 }
 
 /* 심의 설정 폼 스타일 */
@@ -206,18 +213,23 @@ body.light-theme .tab-content::-webkit-scrollbar-thumb {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: 12px;
-  padding: 16px;
+  padding: 20px;
+  box-shadow: var(--shadow);
 }
 
 .section-title {
-  font-size: 0.95rem;
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: var(--brand-green);
+}
+
+body.dark-theme .section-title, body:not(.light-theme) .section-title {
+  color: var(--green-light);
 }
 
 .form-group {
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .form-group:last-child {
@@ -226,33 +238,35 @@ body.light-theme .tab-content::-webkit-scrollbar-thumb {
 
 .form-label {
   display: block;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
+  font-weight: 600;
   color: var(--text-muted);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .form-input {
   width: 100%;
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--bg-color);
   border: 1px solid var(--card-border);
   border-radius: 8px;
   color: var(--text-main);
-  padding: 8px 12px;
-  font-size: 0.85rem;
+  padding: 10px 14px;
+  font-size: 0.88rem;
   outline: none;
   transition: var(--transition);
 }
 
 .form-input:focus {
   border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 117, 74, 0.15);
 }
 
 /* 라디오 / 체크박스 옵션 */
 .option-item {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 12px;
+  margin-bottom: 12px;
   cursor: pointer;
 }
 
@@ -262,57 +276,54 @@ body.light-theme .tab-content::-webkit-scrollbar-thumb {
 
 .option-input {
   margin-top: 3px;
+  accent-color: var(--primary-color);
 }
 
 .option-label {
-  font-size: 0.85rem;
+  font-size: 0.88rem;
+  font-weight: 600;
   line-height: 1.4;
 }
 
 .option-desc {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
   margin-top: 2px;
 }
 
 /* 경고창 / 알림상자 */
 .callout {
-  border-radius: 8px;
-  padding: 12px;
-  font-size: 0.8rem;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 0.85rem;
   line-height: 1.5;
-  margin-top: 16px;
+  margin-top: 18px;
   display: none;
 }
 
 .callout.warning {
-  background: rgba(245, 158, 11, 0.1);
-  border: 1px solid rgba(245, 158, 11, 0.2);
+  background: rgba(203, 162, 88, 0.12);
+  border: 1px solid rgba(203, 162, 88, 0.3);
   color: var(--warning-color);
 }
 
-body.light-theme .callout.warning {
-  background: rgba(245, 158, 11, 0.08);
-  border-color: rgba(245, 158, 11, 0.3);
-}
-
 .callout.info {
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.2);
-  color: var(--accent-color);
+  background: var(--green-light);
+  border: 1px solid rgba(0, 117, 74, 0.2);
+  color: var(--house-green);
   display: block;
 }
 
-body.light-theme .callout.info {
-  background: rgba(16, 185, 129, 0.06);
-  border-color: rgba(16, 185, 129, 0.3);
+body.dark-theme .callout.info, body:not(.light-theme) .callout.info {
+  background: rgba(212, 233, 226, 0.15);
+  color: var(--green-light);
 }
 
 /* 하단 저장 버튼 영역 */
 .form-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
+  gap: 10px;
   margin-top: auto;
 }
 
@@ -320,14 +331,19 @@ body.light-theme .callout.info {
   background: var(--primary-color);
   color: #fff;
   border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
+  border-radius: 50px; /* Starbucks Full-Pill */
+  padding: 12px 24px;
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   cursor: pointer;
   transition: var(--transition);
+  box-shadow: var(--shadow);
 }
 
 .save-btn:hover {
   background: var(--primary-hover);
+}
+
+.save-btn:active {
+  transform: scale(0.95);
 }

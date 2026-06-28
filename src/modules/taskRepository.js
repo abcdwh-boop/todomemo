@@ -7,7 +7,7 @@ class TaskRepository {
         usageType: 'teacher-only',
         managerName: '',
         managerContact: '',
-        theme: 'dark' // 테마 설정 추가 (기본값: dark)
+        theme: 'dark'
       },
       tasksByDate: {}
     };
@@ -15,30 +15,65 @@ class TaskRepository {
     this.bakFilePath = null;
     this.tmpFilePath = null;
     this.isInitialized = false;
+    this.isElectron = !!(window.electronAPI && window.fileSystem);
   }
 
   async init() {
-    try {
-      const docsPath = await window.electronAPI.getDocumentsPath();
-      const appDir = window.fileSystem.joinPath(docsPath, 'TodoMemoApp');
-      
-      if (!window.fileSystem.existsSync(appDir)) {
-        window.fileSystem.mkdirSync(appDir);
+    this.isElectron = !!(window.electronAPI && window.fileSystem);
+    if (this.isElectron) {
+      try {
+        const docsPath = await window.electronAPI.getDocumentsPath();
+        const appDir = window.fileSystem.joinPath(docsPath, 'TodoMemoApp');
+        
+        if (!window.fileSystem.existsSync(appDir)) {
+          window.fileSystem.mkdirSync(appDir);
+        }
+
+        this.filePath = window.fileSystem.joinPath(appDir, 'tasks.json');
+        this.bakFilePath = window.fileSystem.joinPath(appDir, 'tasks.json.bak');
+        this.tmpFilePath = window.fileSystem.joinPath(appDir, 'tasks.json.tmp');
+
+        this.loadTasks();
+        this.isInitialized = true;
+      } catch (error) {
+        console.error('Failed to initialize TaskRepository via Electron:', error);
+        this.loadTasksMobile();
+        this.isInitialized = true;
       }
-
-      this.filePath = window.fileSystem.joinPath(appDir, 'tasks.json');
-      this.bakFilePath = window.fileSystem.joinPath(appDir, 'tasks.json.bak');
-      this.tmpFilePath = window.fileSystem.joinPath(appDir, 'tasks.json.tmp');
-
-      this.loadTasks();
+    } else {
+      this.loadTasksMobile();
       this.isInitialized = true;
-    } catch (error) {
-      console.error('Failed to initialize TaskRepository:', error);
-      alert('데이터 저장소를 초기화하는 데 실패했습니다.');
+    }
+  }
+
+  loadTasksMobile() {
+    try {
+      const content = localStorage.getItem('todomemo_data');
+      if (content) {
+        this.data = JSON.parse(content);
+      } else {
+        this.saveTasksInternal();
+      }
+    } catch (e) {
+      console.error('Failed to load from localStorage:', e);
+    }
+    if (!this.data.tasksByDate) this.data.tasksByDate = {};
+    if (!this.data.settings) {
+      this.data.settings = {
+        autoSave: true,
+        usageType: 'teacher-only',
+        managerName: '',
+        managerContact: '',
+        theme: 'dark'
+      };
     }
   }
 
   loadTasks() {
+    if (!this.isElectron) {
+      this.loadTasksMobile();
+      return;
+    }
     if (!this.filePath) return;
 
     if (!window.fileSystem.existsSync(this.filePath)) {
@@ -60,7 +95,7 @@ class TaskRepository {
           theme: 'dark'
         };
       } else if (!this.data.settings.theme) {
-        this.data.settings.theme = 'dark'; // 하위 호환성을 위해 테마가 없으면 주입
+        this.data.settings.theme = 'dark';
       }
     } catch (error) {
       console.error('Failed to parse tasks.json, trying recovery from backup:', error);
@@ -69,7 +104,7 @@ class TaskRepository {
   }
 
   recoverFromBackup() {
-    if (window.fileSystem.existsSync(this.bakFilePath)) {
+    if (this.isElectron && window.fileSystem && window.fileSystem.existsSync(this.bakFilePath)) {
       try {
         const content = window.fileSystem.readFileSync(this.bakFilePath);
         this.data = JSON.parse(content);
@@ -81,7 +116,6 @@ class TaskRepository {
         this.resetData();
       }
     } else {
-      alert('메모 데이터 파일이 손상되었으며 백업 파일이 존재하지 않아 새로 초기화합니다.');
       this.resetData();
     }
   }
@@ -102,31 +136,34 @@ class TaskRepository {
   }
 
   saveTasksInternal() {
-    if (!this.filePath) return;
+    if (this.isElectron) {
+      if (!this.filePath) return;
 
-    try {
-      const jsonString = JSON.stringify(this.data, null, 2);
-      window.fileSystem.writeFileSync(this.tmpFilePath, jsonString);
-      
-      if (window.fileSystem.existsSync(this.filePath)) {
-        try {
-          const currentContent = window.fileSystem.readFileSync(this.filePath);
-          window.fileSystem.writeFileSync(this.bakFilePath, currentContent);
-        } catch (e) {
-          console.warn('Could not create backup before overwrite:', e);
-        }
-      }
-      
-      window.fileSystem.renameSync(this.tmpFilePath, this.filePath);
-      window.electronAPI.notifyTasksUpdated();
-    } catch (error) {
-      console.error('Failed to save tasks atomically:', error);
       try {
-        if (window.fileSystem.existsSync(this.tmpFilePath)) {
-          window.fileSystem.unlinkSync(this.tmpFilePath);
+        const jsonString = JSON.stringify(this.data, null, 2);
+        window.fileSystem.writeFileSync(this.tmpFilePath, jsonString);
+        
+        if (window.fileSystem.existsSync(this.filePath)) {
+          try {
+            const currentContent = window.fileSystem.readFileSync(this.filePath);
+            window.fileSystem.writeFileSync(this.bakFilePath, currentContent);
+          } catch (e) {
+            console.warn('Could not create backup before overwrite:', e);
+          }
         }
-      } catch (unlinkErr) {
-        // 무시
+        
+        window.fileSystem.renameSync(this.tmpFilePath, this.filePath);
+        if (window.electronAPI && window.electronAPI.notifyTasksUpdated) {
+          window.electronAPI.notifyTasksUpdated();
+        }
+      } catch (error) {
+        console.error('Failed to save tasks atomically:', error);
+      }
+    } else {
+      try {
+        localStorage.setItem('todomemo_data', JSON.stringify(this.data));
+      } catch (e) {
+        console.error('Failed to save tasks to localStorage:', e);
       }
     }
   }

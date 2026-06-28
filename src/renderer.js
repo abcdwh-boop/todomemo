@@ -136,9 +136,10 @@ function renderTasks() {
 
     // 상세 메모 유무 아이콘 표시기
     const memoIndicator = document.createElement('span');
-    memoIndicator.className = 'todo-memo-indicator';
-    memoIndicator.textContent = '📝';
+    memoIndicator.className = 'todo-memo-indicator material-symbols-outlined';
+    memoIndicator.textContent = 'description';
     memoIndicator.title = '상세 메모 있음';
+    memoIndicator.style.fontSize = '14px';
     memoIndicator.style.display = task.memo ? 'inline-flex' : 'none';
     contentWrapper.appendChild(memoIndicator);
 
@@ -151,7 +152,7 @@ function renderTasks() {
 
     const triggerBtn = document.createElement('button');
     triggerBtn.className = 'action-btn menu-trigger-btn';
-    triggerBtn.innerHTML = '⋮';
+    triggerBtn.innerHTML = '<span class="material-symbols-outlined">more_vert</span>';
     triggerBtn.title = '더보기';
 
     // 말풍선 드롭다운 메뉴 팝업
@@ -161,22 +162,22 @@ function renderTasks() {
     // 1. 상세 메모 토글 버튼
     const menuMemoBtn = document.createElement('button');
     menuMemoBtn.className = 'todo-menu-item';
-    menuMemoBtn.innerHTML = '<span class="menu-icon">📝</span> 상세 메모';
+    menuMemoBtn.innerHTML = '<span class="material-symbols-outlined menu-icon">description</span> 상세 메모';
 
     // 2. 편집 버튼
     const menuEditBtn = document.createElement('button');
     menuEditBtn.className = 'todo-menu-item';
-    menuEditBtn.innerHTML = '<span class="menu-icon">✏️</span> 편집';
+    menuEditBtn.innerHTML = '<span class="material-symbols-outlined menu-icon">edit</span> 편집';
 
     // 3. 내일로 이동 버튼
     const menuMoveBtn = document.createElement('button');
     menuMoveBtn.className = 'todo-menu-item';
-    menuMoveBtn.innerHTML = '<span class="menu-icon">➡️</span> 내일로 이동';
+    menuMoveBtn.innerHTML = '<span class="material-symbols-outlined menu-icon">arrow_forward</span> 내일로 이동';
 
     // 4. 삭제 버튼
     const menuDeleteBtn = document.createElement('button');
     menuDeleteBtn.className = 'todo-menu-item delete';
-    menuDeleteBtn.innerHTML = '<span class="menu-icon">🗑️</span> 삭제';
+    menuDeleteBtn.innerHTML = '<span class="material-symbols-outlined menu-icon">delete</span> 삭제';
 
     menuPopup.appendChild(menuMemoBtn);
     menuPopup.appendChild(menuEditBtn);

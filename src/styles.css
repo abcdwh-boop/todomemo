@@ -1,40 +1,77 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
-:root {
-  --bg-color: #0d0e12;
-  --card-bg: rgba(22, 24, 30, 0.85);
-  --card-border: rgba(255, 255, 255, 0.07);
-  --primary-color: #5f5dec;
-  --primary-hover: #4e4bc9;
-  --text-main: #f3f4f6;
-  --text-muted: #8e939e;
-  --text-strike: #585c68;
-  --danger-color: #ef4444;
-  --danger-hover: #dc2626;
-  --accent-color: #10b981;
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  --passed-x-color: rgba(244, 63, 94, 0.45); /* 연한 핑크색 X */
+@font-face {
+    font-family: 'GangwonEducationModuche';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFLightA.woff') format('woff');
+    font-weight: 300;
+    font-display: swap;
 }
 
-/* 라이트 테마 변수 오버라이딩 */
+@font-face {
+    font-family: 'GangwonEducationModuche';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff') format('woff');
+    font-weight: 700;
+    font-display: swap;
+}
+
+:root {
+  /* Starbucks Design System Tokens */
+  --bg-color: #f2f0eb; /* Warm Neutral Cream Canvas */
+  --card-bg: #ffffff;  /* Primary Card Surface */
+  --card-border: rgba(0, 0, 0, 0.08); /* Soft Ceramic Border */
+  --primary-color: #00754A; /* Starbucks Green Accent */
+  --primary-hover: #006241; /* Starbucks Brand Green */
+  --brand-green: #006241; /* Starbucks Historic Brand Green */
+  --house-green: #1E3932; /* House Green (Deep Espresso Green) */
+  --green-light: #d4e9e2; /* Muted Green Wash */
+  --text-main: rgba(0, 0, 0, 0.87); /* 87% Black Warm Body Text */
+  --text-muted: rgba(0, 0, 0, 0.58); /* Secondary Metadata Text */
+  --text-strike: rgba(0, 0, 0, 0.38);
+  --danger-color: #c82014; /* Starbucks Red */
+  --danger-hover: #a81a10;
+  --accent-color: #00754A;
+  --gold-color: #cba258; /* Starbucks Gold Ceremonial Accent */
+  --font-family: 'GangwonEducationModuche', sans-serif;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.1);
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --passed-x-color: rgba(200, 32, 20, 0.35);
+}
+
+/* Dark theme / House Green variant */
+body.dark-theme, body:not(.light-theme) {
+  --bg-color: #1E3932; /* House Green Surface */
+  --card-bg: #142823;
+  --card-border: rgba(255, 255, 255, 0.1);
+  --text-main: rgba(255, 255, 255, 0.95);
+  --text-muted: rgba(255, 255, 255, 0.70);
+  --text-strike: rgba(255, 255, 255, 0.40);
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  --passed-x-color: rgba(244, 63, 94, 0.45);
+}
+
 body.light-theme {
-  --bg-color: #f1f5f9; /* 밝은 Slate 계열 */
-  --card-bg: rgba(255, 255, 255, 0.85);
+  --bg-color: #f2f0eb;
+  --card-bg: #ffffff;
   --card-border: rgba(0, 0, 0, 0.08);
-  --text-main: #0f172a; /* 어두운 텍스트 */
-  --text-muted: #64748b; /* 회색 텍스트 */
-  --text-strike: #94a3b8; /* 완료된 취소선 텍스트 */
-  --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-  --passed-x-color: rgba(225, 29, 72, 0.35); /* 라이트 테마용 연한 핑크 X */
-  background: radial-gradient(circle at 50% 0%, rgba(95, 93, 236, 0.06), transparent 70%);
+  --text-main: rgba(0, 0, 0, 0.87);
+  --text-muted: rgba(0, 0, 0, 0.58);
+  --text-strike: rgba(0, 0, 0, 0.38);
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+button, input, textarea, select {
+  font-family: var(--font-family) !important;
+}
+
+.material-symbols-outlined {
+  font-size: 18px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 body {
@@ -46,6 +83,7 @@ body {
   flex-direction: column;
   overflow: hidden;
   user-select: none;
+  letter-spacing: -0.01em;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -54,12 +92,8 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  padding: 16px;
-  background: radial-gradient(circle at 50% 0%, rgba(95, 93, 236, 0.15), transparent 70%);
-}
-
-body.light-theme .app-container {
-  background: radial-gradient(circle at 50% 0%, rgba(95, 93, 236, 0.06), transparent 70%);
+  padding: 18px;
+  background: var(--bg-color);
 }
 
 /* 헤더 영역 */
@@ -71,7 +105,7 @@ body.light-theme .app-container {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .date-left-group {
@@ -90,15 +124,15 @@ body.light-theme .app-container {
   background: var(--primary-color);
   border: 1px solid var(--primary-color);
   color: #fff;
-  border-radius: 8px;
-  padding: 0 10px;
-  height: 32px;
+  border-radius: 50px; /* Universal Full-Pill */
+  padding: 0 12px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   font-size: 0.8rem;
-  font-weight: 500;
+  font-weight: 600;
   transition: var(--transition);
   white-space: nowrap;
 }
@@ -108,13 +142,17 @@ body.light-theme .app-container {
   border-color: var(--primary-hover);
 }
 
+.today-btn:active {
+  transform: scale(0.95);
+}
+
 .date-btn {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   color: var(--text-main);
-  border-radius: 8px;
-  width: 32px;
-  height: 32px;
+  border-radius: 50px; /* Full Pill Navigation */
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -128,61 +166,72 @@ body.light-theme .app-container {
   color: #fff;
 }
 
+.date-btn:active {
+  transform: scale(0.95);
+}
+
 .current-date-display {
-  font-size: 1.1rem;
-  font-weight: 600;
-  letter-spacing: -0.5px;
-  color: var(--text-main);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--brand-green);
   cursor: pointer;
-  padding: 4px 12px;
-  border-radius: 20px;
+  padding: 6px 16px;
+  border-radius: 50px;
   transition: var(--transition);
 }
 
-.current-date-display:hover {
-  background: rgba(255, 255, 255, 0.05);
+body.dark-theme .current-date-display, body:not(.light-theme) .current-date-display {
+  color: #2b5148;
+  color: var(--green-light);
 }
 
-body.light-theme .current-date-display:hover {
-  background: rgba(0, 0, 0, 0.04);
+.current-date-display:hover {
+  background: rgba(0, 117, 74, 0.08);
 }
 
 /* 입력 필드 영역 */
 .input-group {
   display: flex;
-  gap: 8px;
+  gap: 10px;
 }
 
 .todo-input {
   flex: 1;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
-  border-radius: 8px;
+  border-radius: 12px; /* Starbucks 12px Card standard */
   color: var(--text-main);
-  padding: 10px 14px;
+  padding: 12px 16px;
   font-size: 0.95rem;
   outline: none;
   transition: var(--transition);
+  box-shadow: var(--shadow);
 }
 
 .todo-input:focus {
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(95, 93, 236, 0.2);
+  box-shadow: 0 0 0 3px rgba(0, 117, 74, 0.15);
 }
 
 .add-btn {
   background: var(--primary-color);
   color: #fff;
   border: none;
-  border-radius: 8px;
-  padding: 0 16px;
+  border-radius: 50px; /* Full-Pill CTA */
+  padding: 0 22px;
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition);
+  box-shadow: 0 2px 6px rgba(0, 117, 74, 0.2);
 }
 
 .add-btn:hover {
   background: var(--primary-hover);
+}
+
+.add-btn:active {
+  transform: scale(0.95);
 }
 
 /* 할 일 리스트 영역 */
@@ -202,52 +251,42 @@ body.light-theme .current-date-display:hover {
 }
 
 .list-container::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 117, 74, 0.2);
   border-radius: 3px;
-}
-
-body.light-theme .list-container::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-.list-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
 }
 
 .todo-list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .todo-item {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
-  border-radius: 8px;
-  padding: 12px;
+  border-radius: 12px; /* Starbucks 12px Card Radius */
+  padding: 14px 16px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: 8px;
+  box-shadow: var(--shadow);
   transition: var(--transition);
 }
 
 .todo-item:hover {
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-hover);
   transform: translateY(-1px);
-}
-
-body.light-theme .todo-item:hover {
-  border-color: rgba(0, 0, 0, 0.15);
 }
 
 .todo-checkbox {
   appearance: none;
-  width: 18px;
-  height: 18px;
-  border: 2px solid var(--text-muted);
-  border-radius: 4px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--primary-color);
+  border-radius: 50%; /* Rounded checkbox accent */
   cursor: pointer;
   outline: none;
   position: relative;
@@ -255,8 +294,8 @@ body.light-theme .todo-item:hover {
 }
 
 .todo-checkbox:checked {
-  background: var(--accent-color);
-  border-color: var(--accent-color);
+  background: var(--primary-color);
+  border-color: var(--primary-color);
 }
 
 .todo-checkbox:checked::after {
@@ -278,7 +317,7 @@ body.light-theme .todo-item:hover {
 
 .todo-text {
   font-size: 0.95rem;
-  line-height: 1.4;
+  line-height: 1.5;
   word-break: break-all;
   transition: var(--transition);
   cursor: pointer;
@@ -288,27 +327,24 @@ body.light-theme .todo-item:hover {
 .todo-item.done .todo-text {
   text-decoration: line-through;
   color: var(--text-strike);
-  opacity: 0.6;
+  opacity: 0.65;
 }
 
 .todo-item.done {
-  background: rgba(22, 24, 30, 0.5);
-}
-
-body.light-theme .todo-item.done {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(212, 233, 226, 0.2);
+  border-color: transparent;
 }
 
 .todo-main-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
 }
 
 .todo-memo-panel {
-  margin-left: 28px;
-  margin-top: 2px;
+  margin-left: 32px;
+  margin-top: 4px;
   animation: slideDown 0.2s ease-out forwards;
 }
 
@@ -325,13 +361,13 @@ body.light-theme .todo-item.done {
 
 .todo-memo-textarea {
   width: 100%;
-  min-height: 54px;
-  background: rgba(0, 0, 0, 0.18);
+  min-height: 58px;
+  background: rgba(242, 240, 235, 0.5);
   border: 1px solid var(--card-border);
-  border-radius: 6px;
+  border-radius: 8px;
   color: var(--text-main);
-  padding: 8px 10px;
-  font-size: 0.85rem;
+  padding: 10px 12px;
+  font-size: 0.88rem;
   line-height: 1.4;
   font-family: var(--font-family);
   resize: vertical;
@@ -339,30 +375,23 @@ body.light-theme .todo-item.done {
   transition: var(--transition);
 }
 
+body.dark-theme .todo-memo-textarea, body:not(.light-theme) .todo-memo-textarea {
+  background: rgba(0, 0, 0, 0.2);
+}
+
 .todo-memo-textarea:focus {
   border-color: var(--primary-color);
-  background: rgba(0, 0, 0, 0.28);
-  box-shadow: 0 0 0 2px rgba(95, 93, 236, 0.15);
-}
-
-body.light-theme .todo-memo-textarea {
-  background: rgba(255, 255, 255, 0.55);
-}
-
-body.light-theme .todo-memo-textarea:focus {
-  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 0 2px rgba(0, 117, 74, 0.15);
 }
 
 .todo-memo-indicator {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   margin-left: 6px;
-  opacity: 0.5;
+  color: var(--primary-color);
+  opacity: 0.85;
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
-}
-body.light-theme .todo-memo-indicator {
-  opacity: 0.75;
 }
 
 .todo-item:hover .todo-actions {
@@ -372,24 +401,19 @@ body.light-theme .todo-memo-indicator {
 /* 인라인 편집 모드 */
 .todo-edit-input {
   flex: 1;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid var(--primary-color);
-  border-radius: 4px;
+  background: var(--card-bg);
+  border: 1.5px solid var(--primary-color);
+  border-radius: 8px;
   color: var(--text-main);
-  padding: 4px 8px;
+  padding: 6px 10px;
   font-size: 0.95rem;
   outline: none;
   font-family: var(--font-family);
 }
 
-body.light-theme .todo-edit-input {
-  background: rgba(255, 255, 255, 0.9);
-  color: #000;
-}
-
 .edit-actions {
   display: flex;
-  gap: 4px;
+  gap: 6px;
 }
 
 .edit-btn, .cancel-btn {
@@ -397,20 +421,20 @@ body.light-theme .todo-edit-input {
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  font-size: 0.8rem;
+  padding: 6px;
+  border-radius: 50%;
+  font-size: 0.85rem;
   transition: var(--transition);
 }
 
 .edit-btn:hover {
   color: var(--primary-color);
-  background: rgba(95, 93, 236, 0.1);
+  background: rgba(0, 117, 74, 0.1);
 }
 
 .cancel-btn:hover {
   color: var(--danger-color);
-  background: rgba(239, 68, 68, 0.1);
+  background: rgba(200, 32, 20, 0.1);
 }
 
 /* 일반 상태 액션들 */
@@ -431,9 +455,9 @@ body.light-theme .todo-edit-input {
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  width: 24px;
-  height: 24px;
-  border-radius: 4px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -441,11 +465,8 @@ body.light-theme .todo-edit-input {
 }
 
 .action-btn:hover {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-body.light-theme .action-btn:hover {
-  background: rgba(0, 0, 0, 0.04);
+  background: rgba(0, 117, 74, 0.1);
+  color: var(--primary-color);
 }
 
 /* 드롭다운 메뉴 및 레이아웃 */
@@ -457,37 +478,31 @@ body.light-theme .action-btn:hover {
   position: absolute;
   top: 100%;
   right: 0;
-  background: #181920;
+  background: var(--card-bg);
   border: 1px solid var(--card-border);
-  border-radius: 8px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   z-index: 100;
   display: none;
   flex-direction: column;
-  min-width: 130px;
-  padding: 4px;
-  margin-top: 4px;
+  min-width: 140px;
+  padding: 6px;
+  margin-top: 6px;
 }
 
 .todo-menu-popup.open {
   display: flex;
 }
 
-body.light-theme .todo-menu-popup {
-  background: rgba(255, 255, 255, 0.98);
-  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.12);
-  border-color: rgba(0, 0, 0, 0.08);
-}
-
 .todo-menu-item {
   background: transparent;
   border: none;
   color: var(--text-main);
-  padding: 8px 12px;
-  font-size: 0.82rem;
+  padding: 10px 14px;
+  font-size: 0.85rem;
   text-align: left;
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -499,19 +514,8 @@ body.light-theme .todo-menu-popup {
 }
 
 .todo-menu-item:hover {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-body.light-theme .todo-menu-item:hover {
-  background: rgba(0, 0, 0, 0.04);
-}
-
-.todo-menu-item .menu-icon {
-  font-size: 0.85rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 16px;
+  background: rgba(0, 117, 74, 0.08);
+  color: var(--primary-color);
 }
 
 .todo-menu-item.delete {
@@ -519,20 +523,21 @@ body.light-theme .todo-menu-item:hover {
 }
 
 .todo-menu-item.delete:hover {
-  background: rgba(239, 68, 68, 0.1);
+  background: rgba(200, 32, 20, 0.08);
 }
 
 .empty-state {
   text-align: center;
   color: var(--text-muted);
-  padding: 40px 0;
-  font-size: 0.9rem;
+  padding: 48px 0;
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 
 /* 하단 버튼 바 */
 .bottom-actions {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 12px;
 }
 
@@ -541,30 +546,33 @@ body.light-theme .todo-menu-item:hover {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   color: var(--text-main);
-  border-radius: 8px;
-  padding: 10px;
-  font-size: 0.85rem;
-  font-weight: 500;
+  border-radius: 50px; /* Starbucks Full-Pill buttons */
+  padding: 8px 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 4px;
+  box-shadow: var(--shadow);
   transition: var(--transition);
+  white-space: nowrap;
 }
 
 .bottom-btn:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.15);
+  background: var(--green-light);
+  color: var(--house-green);
+  border-color: var(--primary-color);
 }
 
-body.light-theme .bottom-btn:hover {
-  background: rgba(0, 0, 0, 0.04);
-  border-color: rgba(0, 0, 0, 0.15);
+.bottom-btn:active {
+  transform: scale(0.95);
 }
 
 .bottom-btn.active {
-  background: rgba(95, 93, 236, 0.1);
+  background: var(--primary-color);
+  color: #fff;
   border-color: var(--primary-color);
 }
 
@@ -573,11 +581,11 @@ body.light-theme .bottom-btn:hover {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: 12px;
-  padding: 12px;
+  padding: 16px;
   margin-bottom: 12px;
-  display: none; /* JS에서 토글 */
+  display: none;
   flex-direction: column;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-hover);
   animation: slideUp 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
@@ -596,12 +604,13 @@ body.light-theme .bottom-btn:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .cal-title {
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--brand-green);
 }
 
 .cal-nav-btn {
@@ -609,18 +618,18 @@ body.light-theme .bottom-btn:hover {
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  font-size: 0.8rem;
-  padding: 2px 6px;
-  border-radius: 4px;
+  font-size: 0.9rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cal-nav-btn:hover {
-  color: var(--text-main);
-  background: rgba(255, 255, 255, 0.05);
-}
-
-body.light-theme .cal-nav-btn:hover {
-  background: rgba(0, 0, 0, 0.04);
+  color: var(--primary-color);
+  background: rgba(0, 117, 74, 0.1);
 }
 
 .cal-grid {
@@ -638,9 +647,9 @@ body.light-theme .cal-nav-btn:hover {
 }
 
 .cal-day {
-  font-size: 0.8rem;
-  padding: 6px 0;
-  border-radius: 6px;
+  font-size: 0.85rem;
+  padding: 8px 0;
+  border-radius: 50%; /* Circular date cells */
   cursor: pointer;
   color: var(--text-muted);
   transition: var(--transition);
@@ -648,25 +657,24 @@ body.light-theme .cal-nav-btn:hover {
 
 .cal-day.current-month {
   color: var(--text-main);
+  font-weight: 500;
 }
 
 .cal-day:hover {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-body.light-theme .cal-day:hover {
-  background: rgba(0, 0, 0, 0.04);
+  background: rgba(0, 117, 74, 0.1);
+  color: var(--primary-color);
 }
 
 .cal-day.selected {
   background: var(--primary-color) !important;
   color: #fff !important;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .cal-day.today {
-  border: 1px solid var(--primary-color);
+  border: 1.5px solid var(--primary-color);
   color: var(--primary-color);
+  font-weight: 700;
 }
 
 .cal-day.today.selected {
@@ -689,72 +697,14 @@ body.light-theme .cal-day:hover {
   pointer-events: none;
 }
 
-/* 설정 퀵 패널 */
-.settings-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 12px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--card-border);
-  border-radius: 8px;
-  margin-bottom: 12px;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-body.light-theme .settings-bar {
-  background: rgba(0, 0, 0, 0.01);
-}
-
-.toggle-container {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-}
-
-.toggle-switch {
-  position: relative;
-  width: 32px;
-  height: 18px;
-  background: #374151;
-  border-radius: 9px;
-  transition: var(--transition);
-}
-
-body.light-theme .toggle-switch {
-  background: #cbd5e1;
-}
-
-.toggle-switch::after {
-  content: '';
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: #fff;
-  top: 2px;
-  left: 2px;
-  transition: var(--transition);
-}
-
-.toggle-container.active .toggle-switch {
-  background: var(--accent-color);
-}
-
-.toggle-container.active .toggle-switch::after {
-  left: 16px;
-}
-
-/* 드래프트 가드 모달 */
+/* 모달 */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(30, 57, 50, 0.6); /* House Green translucent overlay */
   backdrop-filter: blur(4px);
   display: none;
   align-items: center;
@@ -764,47 +714,47 @@ body.light-theme .toggle-switch {
 }
 
 .modal-content {
-  background: #1a1b23;
+  background: var(--card-bg);
   border: 1px solid var(--card-border);
-  border-radius: 12px;
-  padding: 20px;
-  width: 320px;
-  box-shadow: var(--shadow);
+  border-radius: 16px;
+  padding: 24px;
+  width: 340px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
   text-align: center;
 }
 
-body.light-theme .modal-content {
-  background: #ffffff;
-  border-color: rgba(0,0,0,0.1);
-}
-
 .modal-title {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 10px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--brand-green);
+  margin-bottom: 12px;
 }
 
 .modal-body {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--text-muted);
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   line-height: 1.5;
 }
 
 .modal-actions {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .modal-btn {
-  padding: 10px;
-  border-radius: 8px;
-  font-size: 0.85rem;
+  padding: 12px;
+  border-radius: 50px; /* Starbucks Full-Pill */
+  font-size: 0.88rem;
   font-weight: 600;
   cursor: pointer;
   border: none;
   transition: var(--transition);
+}
+
+.modal-btn:active {
+  transform: scale(0.95);
 }
 
 .modal-btn.primary {
@@ -817,20 +767,12 @@ body.light-theme .modal-content {
 }
 
 .modal-btn.secondary {
-  background: #2e303f;
-  color: var(--text-main);
-}
-
-body.light-theme .modal-btn.secondary {
-  background: #e2e8f0;
+  background: var(--green-light);
+  color: var(--house-green);
 }
 
 .modal-btn.secondary:hover {
-  background: #3e4155;
-}
-
-body.light-theme .modal-btn.secondary:hover {
-  background: #cbd5e1;
+  background: #c2e2d8;
 }
 
 .modal-btn.danger {
@@ -851,12 +793,8 @@ body.light-theme .modal-btn.secondary:hover {
 .footer {
   margin-top: auto;
   border-top: 1px solid var(--card-border);
-  padding-top: 10px;
-  font-size: 0.75rem;
+  padding-top: 12px;
+  font-size: 0.78rem;
   color: var(--text-muted);
   text-align: center;
-}
-
-.footer-info {
-  line-height: 1.4;
 }

@@ -1,36 +1,69 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@font-face {
+    font-family: 'GangwonEducationModuche';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFLightA.woff') format('woff');
+    font-weight: 300;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GangwonEducationModuche';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff') format('woff');
+    font-weight: 700;
+    font-display: swap;
+}
 
 :root {
-  --bg-color: #0c0d12;
-  --card-bg: rgba(22, 24, 30, 0.85);
-  --card-border: rgba(255, 255, 255, 0.07);
-  --primary-color: #5f5dec;
-  --primary-hover: #4e4bc9;
-  --text-main: #f3f4f6;
-  --text-muted: #8e939e;
-  --text-strike: #585c68;
-  --accent-color: #10b981;
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --bg-color: #f2f0eb;
+  --card-bg: #ffffff;
+  --card-border: rgba(0, 0, 0, 0.08);
+  --primary-color: #00754A;
+  --primary-hover: #006241;
+  --brand-green: #006241;
+  --house-green: #1E3932;
+  --green-light: #d4e9e2;
+  --text-main: rgba(0, 0, 0, 0.87);
+  --text-muted: rgba(0, 0, 0, 0.58);
+  --text-strike: rgba(0, 0, 0, 0.38);
+  --accent-color: #00754A;
+  --font-family: 'GangwonEducationModuche', sans-serif;
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
   --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 라이트 테마 변수 오버라이딩 */
+body.dark-theme, body:not(.light-theme) {
+  --bg-color: #1E3932;
+  --card-bg: #142823;
+  --card-border: rgba(255, 255, 255, 0.1);
+  --text-main: rgba(255, 255, 255, 0.95);
+  --text-muted: rgba(255, 255, 255, 0.70);
+  --text-strike: rgba(255, 255, 255, 0.40);
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
 body.light-theme {
-  --bg-color: #f1f5f9;
-  --card-bg: rgba(255, 255, 255, 0.9);
+  --bg-color: #f2f0eb;
+  --card-bg: #ffffff;
   --card-border: rgba(0, 0, 0, 0.08);
-  --text-main: #0f172a;
-  --text-muted: #64748b;
-  --text-strike: #94a3b8;
-  --shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-  background: radial-gradient(circle at 50% 0%, rgba(95, 93, 236, 0.06), transparent 80%);
+  --text-main: rgba(0, 0, 0, 0.87);
+  --text-muted: rgba(0, 0, 0, 0.58);
+  --text-strike: rgba(0, 0, 0, 0.38);
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+button, input, textarea, select {
+  font-family: var(--font-family) !important;
+}
+
+.material-symbols-outlined {
+  font-size: 18px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 body {
@@ -43,6 +76,7 @@ body {
   overflow: hidden;
   padding: 20px;
   user-select: none;
+  letter-spacing: -0.01em;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -50,11 +84,6 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: radial-gradient(circle at 50% 0%, rgba(95, 93, 236, 0.1), transparent 80%);
-}
-
-body.light-theme .calendar-container {
-  background: radial-gradient(circle at 50% 0%, rgba(95, 93, 236, 0.04), transparent 80%);
 }
 
 /* 상단 컨트롤 영역 */
@@ -75,15 +104,16 @@ body.light-theme .calendar-container {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   color: var(--text-main);
-  border-radius: 8px;
-  width: 36px;
-  height: 36px;
+  border-radius: 50px; /* Full Pill Navigation */
+  width: 38px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1.1rem;
   transition: var(--transition);
+  box-shadow: var(--shadow);
 }
 
 .nav-btn:hover {
@@ -92,28 +122,42 @@ body.light-theme .calendar-container {
   color: #fff;
 }
 
+.nav-btn:active {
+  transform: scale(0.95);
+}
+
 .current-month-display {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.02em;
+  color: var(--brand-green);
+}
+
+body.dark-theme .current-month-display, body:not(.light-theme) .current-month-display {
+  color: var(--green-light);
 }
 
 .today-btn {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  color: var(--text-main);
-  border-radius: 8px;
-  padding: 0 16px;
-  height: 36px;
-  font-size: 0.85rem;
+  background: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  color: #fff;
+  border-radius: 50px; /* Starbucks Full Pill */
+  padding: 0 14px;
+  height: 34px;
+  font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition);
+  box-shadow: var(--shadow);
+  white-space: nowrap;
 }
 
 .today-btn:hover {
-  border-color: var(--primary-color);
-  background: rgba(95, 93, 236, 0.05);
+  background: var(--primary-hover);
+}
+
+.today-btn:active {
+  transform: scale(0.95);
 }
 
 /* 그리드 레이아웃 */
@@ -122,7 +166,7 @@ body.light-theme .calendar-container {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--card-border);
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
   background: var(--card-bg);
   box-shadow: var(--shadow);
@@ -132,20 +176,20 @@ body.light-theme .calendar-container {
 .weekdays-header {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(0, 117, 74, 0.05);
   border-bottom: 1px solid var(--card-border);
 }
 
-body.light-theme .weekdays-header {
-  background: rgba(0, 0, 0, 0.02);
-}
-
 .weekday {
-  padding: 12px 0;
+  padding: 14px 0;
   text-align: center;
   font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-muted);
+  font-weight: 700;
+  color: var(--brand-green);
+}
+
+body.dark-theme .weekday, body:not(.light-theme) .weekday {
+  color: var(--green-light);
 }
 
 /* 날짜 그리드 */
@@ -174,11 +218,7 @@ body.light-theme .weekdays-header {
 }
 
 .day-cell:hover {
-  background: rgba(255, 255, 255, 0.02);
-}
-
-body.light-theme .day-cell:hover {
-  background: rgba(0, 0, 0, 0.02);
+  background: rgba(0, 117, 74, 0.04);
 }
 
 .day-cell.other-month {
@@ -186,7 +226,7 @@ body.light-theme .day-cell:hover {
 }
 
 .day-cell.selected {
-  background: rgba(95, 93, 236, 0.08);
+  background: rgba(0, 117, 74, 0.1);
 }
 
 /* 셀 내부 날짜 번호 */
@@ -194,8 +234,8 @@ body.light-theme .day-cell:hover {
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--text-muted);
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -210,10 +250,11 @@ body.light-theme .day-cell:hover {
 .day-cell.today .day-number {
   background: var(--primary-color);
   color: #fff;
+  font-weight: 700;
 }
 
 .day-cell.selected .day-number {
-  border: 1px solid var(--primary-color);
+  border: 2px solid var(--primary-color);
 }
 
 /* 셀 내의 투두 요약 목록 */
@@ -221,36 +262,34 @@ body.light-theme .day-cell:hover {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
   overflow: hidden;
 }
 
 .cell-todo-item {
-  font-size: 0.72rem;
-  padding: 2px 6px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 4px;
-  color: var(--text-main);
+  font-size: 0.74rem;
+  padding: 3px 8px;
+  background: var(--green-light);
+  border-radius: 6px;
+  color: var(--house-green);
+  font-weight: 500;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
   line-height: 1.3;
-  border-left: 2px solid var(--primary-color);
+  border-left: 3px solid var(--primary-color);
 }
 
-body.light-theme .cell-todo-item {
-  background: rgba(0, 0, 0, 0.03);
+body.dark-theme .cell-todo-item, body:not(.light-theme) .cell-todo-item {
+  background: rgba(212, 233, 226, 0.15);
+  color: #ffffff;
 }
 
 .cell-todo-item.done {
   text-decoration: line-through;
   color: var(--text-strike);
-  opacity: 0.55;
+  opacity: 0.6;
   border-left-color: var(--text-strike);
-  background: rgba(0, 0, 0, 0.1);
-}
-
-body.light-theme .cell-todo-item.done {
   background: rgba(0, 0, 0, 0.05);
 }
 
@@ -259,7 +298,7 @@ body.light-theme .cell-todo-item.done {
   margin-top: 16px;
   border-top: 1px solid var(--card-border);
   padding-top: 12px;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
   text-align: center;
 }
